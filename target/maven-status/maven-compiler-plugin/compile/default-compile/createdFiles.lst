@@ -1,0 +1,13 @@
+amazon10\Services$Handler.class
+amazon10\Services$Require.class
+amazon10\Services$Global.class
+amazon10\Services$Polyglot.class
+amazon10\Services$Algorithms.class
+amazon10\Services$Worker.class
+amazon10\Services$Http.class
+amazon10\Services.class
+amazon10\Services$ServerResponse.class
+amazon10\Services$IncommingMessage.class
+amazon10\Services$Server.class
+amazon10\Services$TransferablePromiseCompletion.class
+amazon10\Services$Computation.class

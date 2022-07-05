@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>amazon10</groupId>
+    <artifactId>payment</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <debug.arg>Ddebug=false</debug.arg>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <executable>${graalvm}/bin/node</executable>
+                    <classpathScope>runtime</classpathScope>
+                    <arguments>
+                        <argument>--experimental-worker</argument>
+                        <argument>--polyglot</argument>
+                        <argument>--jvm.${debug.arg}</argument>
+                        <argument>--jvm.classpath</argument>
+                        <classpath/>
+                        <argument>${basedir}/src/main/js/launcher.js</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <jvm>${graalvm}/bin/node</jvm>
+                    <argLine>--experimental-worker --polyglot --use-classpath-env-var --jvm.${debug.arg} ${basedir}/src/main/js/launcher.js</argLine>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <profiles>
+        <profile>
+            <id>graalvm-0.26</id>
+            <activation>
+                <file>
+                    <exists>${java.home}/languages/js/trufflenode.jar</exists>
+                </file>
+            </activation>
+            <properties>
+                <graalvm>${java.home}</graalvm>
+            </properties>
+        </profile>
+    </profiles>
+</project>
+
